@@ -5,41 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Copy Image</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <!-- Navigation Bar -->
-    <nav style="background-color: #444; color: white; padding: 15px;">
-        <div style="text-align: center; font-size: 1.8em; font-weight: bold;">Copy Image to Clipboard</div>
-        <ul style="list-style: none; display: flex; justify-content: center; margin: 10px 0 0; padding: 0;">
-            <li style="margin: 0 10px;">
-                <a href="./index.html"
-                    style="color: white; text-decoration: none; background-color: #555; padding: 10px 20px; border-radius: 5px; display: inline-block;">see
-                    sample that works only on PNG images</a>
-            </li>
-            <li style="margin: 0 10px;">
-                <a href="./convert.html"
-                    style="color: white; text-decoration: none; background-color: #555; padding: 10px 20px; border-radius: 5px; display: inline-block;">see
-                    sample that works for All Images</a>
-            </li>
+    <nav>
+        <div>Copy Image to Clipboard</div>
+        <ul>
+            <li><a href="./index.html">see sample that works only on PNG images</a></li>
+            <li><a href="./convert.html">see sample that works for All Images</a></li>
         </ul>
     </nav>
 
     <!-- Heading for the page -->
     <h3>Copy Image to Clipboard (works only for png image)</h3>
 
-    <!-- Image to be copied -->
-    <img id="img" src="./images/image.png" width="200">
-    <br>
-
-    <!-- Button to trigger the copy action -->
-    <button id="copyBtn">Copy Image</button>
+    <!-- Image Card -->
+    <div class="card">
+        <h4>PNG</h4>
+        <img id="img" src="./images/image.png" alt="PNG Image">
+        <br>
+        <button id="copyBtn">📋 Copy Image</button>
+    </div>
 
     <script>
-        // Add a click event listener to the button
+        // Event listener for the PNG image copy button
         document.getElementById('copyBtn').onclick = async () => {
             try {
-                // Fetch the image from the provided URL
+                // Fetch the PNG image from the server
                 const response = await fetch('./images/image.png');
 
                 // Convert the fetched image into a blob (binary large object)
@@ -48,11 +42,11 @@
                 // Use the Clipboard API to copy the image blob to the clipboard
                 await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
 
-                // Notify the user that the image has been copied successfully
-                alert('Image copied!');
+                // Notify the user of success
+                alert('✅ Image copied to clipboard!');
             } catch {
                 // Handle errors (e.g., unsupported browser, HTTPS requirement)
-                alert('Failed to copy. Ensure HTTPS/localhost.');
+                alert('❌ Failed to copy. Ensure HTTPS/localhost.');
             }
         };
     </script>

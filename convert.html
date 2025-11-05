@@ -5,158 +5,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Copy Image</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <!-- Navigation Bar -->
-    <nav style="background-color: #444; color: white; padding: 15px;">
-        <div style="text-align: center; font-size: 1.8em; font-weight: bold;">Copy Image to Clipboard</div>
-        <ul style="list-style: none; display: flex; justify-content: center; margin: 10px 0 0; padding: 0;">
-            <li style="margin: 0 10px;">
-                <a href="./index.html"
-                    style="color: white; text-decoration: none; background-color: #555; padding: 10px 20px; border-radius: 5px; display: inline-block;">see
-                    sample that works only on PNG images</a>
-            </li>
-            <li style="margin: 0 10px;">
-                <a href="./convert.html"
-                    style="color: white; text-decoration: none; background-color: #555; padding: 10px 20px; border-radius: 5px; display: inline-block;">see
-                    sample that works for All Images</a>
-            </li>
+    <nav>
+        <div>Copy Image to Clipboard</div>
+        <ul>
+            <li><a href="./index.html">see sample that works only on PNG images</a></li>
+            <li><a href="./convert.html">see sample that works for All Images</a></li>
         </ul>
     </nav>
 
     <!-- Heading for the page -->
     <h3>Copy Image to Clipboard (works for all images with PNG conversion)</h3>
 
-    <!-- Image to be copied -->
-    <img id="img1" src="./images/photo.jpeg" width="200" alt="Product Image">
-    <br>
-    <!-- Button to trigger the copy action -->
-    <button id="copyBtn1">📋 Copy Image 1</button>
+    <!-- First Image Card -->
+    <div class="card">
+        <h4>JPEG</h4>
+        <img id="img1" src="./images/photo.jpeg" alt="Product Image">
+        <br>
+        <!-- Button to trigger the copy action -->
+        <button id="copyBtn1">📋 Copy Image</button>
+    </div>
 
-    <br>
-    <br>
+    <!-- Second Image Card -->
+    <div class="card">
+        <h4>AVIF</h4>
+        <img id="img2" src="./images/photo.avif" alt="Second Product Image">
+        <br>
+        <!-- Button to trigger the copy action for the second image -->
+        <button id="copyBtn2">📋 Copy Image</button>
+    </div>
 
-    <!-- Second Image to be copied -->
-    <img id="img2" src="./images/photo.avif" width="200" alt="Second Product Image">
-    <br>
-    <!-- Button to trigger the copy action for the second image -->
-    <button id="copyBtn2">📋 Copy Image 2</button>
+    <!-- Third Image Card -->
+    <div class="card">
+        <h4>WEBP</h4>
+        <img id="img3" src="./images/photo.webp" alt="Third Product Image">
+        <br>
+        <button id="copyBtn3">📋 Copy Image</button>
+    </div>
 
-    <br>
-    <br>
-
-    <!-- Third Image to be copied -->
-    <img id="img3" src="./images/photo.webp" width="200" alt="Third Product Image">
-    <br>
-    <button id="copyBtn3">📋 Copy Image 3</button>
-
-    <br>
-    <br>
-
-    <!-- Fourth Image to be copied -->
-    <img id="img4" src="./images/photo.jpg" width="200" alt="Fourth Product Image">
-    <br>
-    <button id="copyBtn4">📋 Copy Image 4</button>
+    <!-- Fourth Image Card -->
+    <div class="card">
+        <h4>JPG</h4>
+        <img id="img4" src="./images/photo.jpg" alt="Fourth Product Image">
+        <br>
+        <button id="copyBtn4">📋 Copy Image</button>
+    </div>
 
     <script>
-        // Add a click event listener to the first button
+        // Event listener for the first image copy button
         document.getElementById('copyBtn1').addEventListener('click', async () => {
             try {
-                // Fetch the image from the provided URL
+                // Fetch the JPEG image from the server
                 const blob = await (await fetch('./images/photo.jpeg')).blob();
 
-                // Convert the fetched image into a bitmap for further processing
+                // Convert the image blob into a bitmap for rendering
                 const bitmap = await createImageBitmap(blob);
 
-                // Create a canvas element to draw the image
+                // Create a canvas to draw the image
                 const canvas = document.createElement('canvas');
-                canvas.width = bitmap.width; // Set canvas width to image width
-                canvas.height = bitmap.height; // Set canvas height to image height
-
-                // Draw the image onto the canvas
+                canvas.width = bitmap.width;
+                canvas.height = bitmap.height;
                 canvas.getContext('2d').drawImage(bitmap, 0, 0);
 
                 // Convert the canvas content to a PNG blob
                 const pngBlob = await new Promise(r => canvas.toBlob(r, 'image/png'));
 
-                // Copy the PNG blob to the clipboard using the Clipboard API
+                // Copy the PNG blob to the clipboard
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
 
-                // Notify the user that the image has been copied successfully
+                // Notify the user of success
                 alert('✅ Image 1 copied to clipboard as PNG!');
             } catch (error) {
                 // Handle errors (e.g., unsupported browser, HTTPS requirement)
                 console.error(error);
-                alert('❌ Failed to copy Image 1. Make sure you are using Chrome/Edge over HTTPS or localhost.');
+                alert('❌ Failed to copy Image 1. Ensure you are using Chrome/Edge over HTTPS or localhost.');
             }
         });
 
-        // Add a click event listener to the second button
+        // Event listener for the second image copy button
         document.getElementById('copyBtn2').addEventListener('click', async () => {
             try {
-                // Fetch the second image from the provided URL
+                // Fetch the AVIF image from the server
                 const blob = await (await fetch('./images/photo.avif')).blob();
 
-                // Convert the fetched image into a bitmap for further processing
+                // Convert the image blob into a bitmap for rendering
                 const bitmap = await createImageBitmap(blob);
 
-                // Create a canvas element to draw the image
+                // Create a canvas to draw the image
                 const canvas = document.createElement('canvas');
-                canvas.width = bitmap.width; // Set canvas width to image width
-                canvas.height = bitmap.height; // Set canvas height to image height
-
-                // Draw the image onto the canvas
+                canvas.width = bitmap.width;
+                canvas.height = bitmap.height;
                 canvas.getContext('2d').drawImage(bitmap, 0, 0);
 
                 // Convert the canvas content to a PNG blob
                 const pngBlob = await new Promise(r => canvas.toBlob(r, 'image/png'));
 
-                // Copy the PNG blob to the clipboard using the Clipboard API
+                // Copy the PNG blob to the clipboard
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
 
-                // Notify the user that the second image has been copied successfully
+                // Notify the user of success
                 alert('✅ Image 2 copied to clipboard as PNG!');
             } catch (error) {
                 // Handle errors (e.g., unsupported browser, HTTPS requirement)
                 console.error(error);
-                alert('❌ Failed to copy Image 2. Make sure you are using Chrome/Edge over HTTPS or localhost.');
+                alert('❌ Failed to copy Image 2. Ensure you are using Chrome/Edge over HTTPS or localhost.');
             }
         });
 
-        // Add a click event listener to the third button
+        // Event listener for the third image copy button
         document.getElementById('copyBtn3').addEventListener('click', async () => {
             try {
+                // Fetch the WEBP image from the server
                 const blob = await (await fetch('./images/photo.webp')).blob();
+
+                // Convert the image blob into a bitmap for rendering
                 const bitmap = await createImageBitmap(blob);
+
+                // Create a canvas to draw the image
                 const canvas = document.createElement('canvas');
                 canvas.width = bitmap.width;
                 canvas.height = bitmap.height;
                 canvas.getContext('2d').drawImage(bitmap, 0, 0);
+
+                // Convert the canvas content to a PNG blob
                 const pngBlob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+
+                // Copy the PNG blob to the clipboard
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+
+                // Notify the user of success
                 alert('✅ Image 3 copied to clipboard as PNG!');
             } catch (error) {
+                // Handle errors (e.g., unsupported browser, HTTPS requirement)
                 console.error(error);
-                alert('❌ Failed to copy Image 3. Make sure you are using Chrome/Edge over HTTPS or localhost.');
+                alert('❌ Failed to copy Image 3. Ensure you are using Chrome/Edge over HTTPS or localhost.');
             }
         });
 
-        // Add a click event listener to the fourth button
+        // Event listener for the fourth image copy button
         document.getElementById('copyBtn4').addEventListener('click', async () => {
             try {
+                // Fetch the JPG image from the server
                 const blob = await (await fetch('./images/photo.jpg')).blob();
+
+                // Convert the image blob into a bitmap for rendering
                 const bitmap = await createImageBitmap(blob);
+
+                // Create a canvas to draw the image
                 const canvas = document.createElement('canvas');
                 canvas.width = bitmap.width;
                 canvas.height = bitmap.height;
                 canvas.getContext('2d').drawImage(bitmap, 0, 0);
+
+                // Convert the canvas content to a PNG blob
                 const pngBlob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+
+                // Copy the PNG blob to the clipboard
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+
+                // Notify the user of success
                 alert('✅ Image 4 copied to clipboard as PNG!');
             } catch (error) {
+                // Handle errors (e.g., unsupported browser, HTTPS requirement)
                 console.error(error);
-                alert('❌ Failed to copy Image 4. Make sure you are using Chrome/Edge over HTTPS or localhost.');
+                alert('❌ Failed to copy Image 4. Ensure you are using Chrome/Edge over HTTPS or localhost.');
             }
         });
     </script>
