@@ -29,15 +29,23 @@
     <h3>Copy Image to Clipboard (works for all images with PNG conversion)</h3>
 
     <!-- Image to be copied -->
-    <img id="img" src="./images/photo.jpeg" width="200" alt="Product Image">
+    <img id="img1" src="./images/photo.jpeg" width="200" alt="Product Image">
+    <br>
+    <!-- Button to trigger the copy action -->
+    <button id="copyBtn1">📋 Copy Image 1</button>
+
+    <br>
     <br>
 
-    <!-- Button to trigger the copy action -->
-    <button id="copyBtn">📋 Copy Image</button>
+    <!-- Second Image to be copied -->
+    <img id="img2" src="./images/photo.avif" width="200" alt="Second Product Image">
+    <br>
+    <!-- Button to trigger the copy action for the second image -->
+    <button id="copyBtn2">📋 Copy Image 2</button>
 
     <script>
-        // Add a click event listener to the button
-        document.getElementById('copyBtn').addEventListener('click', async () => {
+        // Add a click event listener to the first button
+        document.getElementById('copyBtn1').addEventListener('click', async () => {
             try {
                 // Fetch the image from the provided URL
                 const blob = await (await fetch('./images/photo.jpeg')).blob();
@@ -60,11 +68,43 @@
                 await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
 
                 // Notify the user that the image has been copied successfully
-                alert('✅ Image copied to clipboard as PNG!');
+                alert('✅ Image 1 copied to clipboard as PNG!');
             } catch (error) {
                 // Handle errors (e.g., unsupported browser, HTTPS requirement)
                 console.error(error);
-                alert('❌ Failed to copy image. Make sure you are using Chrome/Edge over HTTPS or localhost.');
+                alert('❌ Failed to copy Image 1. Make sure you are using Chrome/Edge over HTTPS or localhost.');
+            }
+        });
+
+        // Add a click event listener to the second button
+        document.getElementById('copyBtn2').addEventListener('click', async () => {
+            try {
+                // Fetch the second image from the provided URL
+                const blob = await (await fetch('./images/photo.avif')).blob();
+
+                // Convert the fetched image into a bitmap for further processing
+                const bitmap = await createImageBitmap(blob);
+
+                // Create a canvas element to draw the image
+                const canvas = document.createElement('canvas');
+                canvas.width = bitmap.width; // Set canvas width to image width
+                canvas.height = bitmap.height; // Set canvas height to image height
+
+                // Draw the image onto the canvas
+                canvas.getContext('2d').drawImage(bitmap, 0, 0);
+
+                // Convert the canvas content to a PNG blob
+                const pngBlob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+
+                // Copy the PNG blob to the clipboard using the Clipboard API
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+
+                // Notify the user that the second image has been copied successfully
+                alert('✅ Image 2 copied to clipboard as PNG!');
+            } catch (error) {
+                // Handle errors (e.g., unsupported browser, HTTPS requirement)
+                console.error(error);
+                alert('❌ Failed to copy Image 2. Make sure you are using Chrome/Edge over HTTPS or localhost.');
             }
         });
     </script>
