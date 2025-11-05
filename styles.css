@@ -73,3 +73,33 @@ nav ul li a {
 .card button:hover {
     background-color: #0056b3;
 }
+
+/* Information Card Styles */
+.info-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 20px 0;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.info-card h4 {
+    margin: 0 0 10px;
+}
+
+.info-card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.info-card li {
+    margin: 5px 0;
+}
+
+.success {
+    color: green;
+}
+
+.failure {
+    color: red;
+}
