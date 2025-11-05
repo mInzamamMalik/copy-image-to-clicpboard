@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copy Image Using Clipboard API</title>
+</head>
+<body>
+  <h3>Copy Image to Clipboard (works onlt with png images)</h3>
+
+  <img id="img" src="./images/image.png" width="200">
+  <br>
+  <button id="copyBtn">📋 Copy Image</button>
+
+  <script>
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const imageUrl = './images/image.png';
+      try {
+        // Step 1: Fetch the image as a blob
+        const response = await fetch(imageUrl);
+        const pngImageBlob = await response.blob();
+
+        // Step 2: Copy to clipboard
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            [pngImageBlob.type]: pngImageBlob
+          })
+        ]);
+
+        alert('✅ Image copied to clipboard!');
+      } catch (error) {
+        console.error(error);
+        alert('❌ Failed to copy. This only works in Chrome/Edge on HTTPS or localhost.');
+      }
+    });
+  </script>
+</body>
+</html>
