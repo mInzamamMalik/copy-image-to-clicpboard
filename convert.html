@@ -43,6 +43,14 @@
     <!-- Button to trigger the copy action for the second image -->
     <button id="copyBtn2">📋 Copy Image 2</button>
 
+    <br>
+    <br>
+
+    <!-- Third Image to be copied -->
+    <img id="img3" src="./images/photo.webp" width="200" alt="Third Product Image">
+    <br>
+    <button id="copyBtn3">📋 Copy Image 3</button>
+
     <script>
         // Add a click event listener to the first button
         document.getElementById('copyBtn1').addEventListener('click', async () => {
@@ -105,6 +113,24 @@
                 // Handle errors (e.g., unsupported browser, HTTPS requirement)
                 console.error(error);
                 alert('❌ Failed to copy Image 2. Make sure you are using Chrome/Edge over HTTPS or localhost.');
+            }
+        });
+
+        // Add a click event listener to the third button
+        document.getElementById('copyBtn3').addEventListener('click', async () => {
+            try {
+                const blob = await (await fetch('./images/photo.webp')).blob();
+                const bitmap = await createImageBitmap(blob);
+                const canvas = document.createElement('canvas');
+                canvas.width = bitmap.width;
+                canvas.height = bitmap.height;
+                canvas.getContext('2d').drawImage(bitmap, 0, 0);
+                const pngBlob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+                alert('✅ Image 3 copied to clipboard as PNG!');
+            } catch (error) {
+                console.error(error);
+                alert('❌ Failed to copy Image 3. Make sure you are using Chrome/Edge over HTTPS or localhost.');
             }
         });
     </script>
